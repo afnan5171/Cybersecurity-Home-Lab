@@ -120,6 +120,21 @@ index=wineventlog EventCode=5156
 Unusual spikes in connections that may indicate scanning activity.
 
 ---
+---
+
+## Threat Intelligence & OSINT Investigation
+
+This section highlights how I incorporated open-source intelligence (OSINT) techniques alongside system log analysis to simulate real-world investigative workflows.
+
+- Conducted analysis on simulated platform activity by examining login behavior, session patterns, and user interactions to identify anomalies and potential security risks  
+
+- Correlated Windows event logs (via Splunk) with publicly available OSINT data to add context to suspicious activity and improve investigation accuracy  
+
+- Performed manual review of publicly accessible data sources to identify unusual patterns, including inconsistent user behavior and potential misuse scenarios  
+
+- Designed and executed multiple investigation scenarios (e.g., abnormal login behavior, suspicious engagement patterns, potential account misuse) to practice identifying indicators of compromise  
+
+- Documented findings in structured analysis reports, including observed patterns, risk assessments, and recommended next steps, mirroring real-world SOC and threat intelligence workflows  
 
 ## Use of AI in the Lab
 I leveraged AI tools to:
