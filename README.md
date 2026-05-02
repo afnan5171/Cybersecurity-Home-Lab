@@ -52,5 +52,94 @@ I then used Splunk to test these hypotheses against collected endpoint logs.
 - Packet-level inspection with Wireshark  
 
 Example Splunk query:
+
 ```spl
 index=wineventlog EventCode=4624
+```
+
+---
+
+## Detection Queries (Splunk SPL)
+
+These detections were developed using a hypothesis-driven threat hunting approach and align with common attacker techniques from frameworks like MITRE ATT&CK.
+
+### 1. Brute Force Login Detection
+Detects multiple failed logins followed by a successful login.
+
+```spl
+index=wineventlog (EventCode=4625 OR EventCode=4624)
+| stats count by Account_Name, EventCode
+| where count > 5
+```
+
+**What it shows:**  
+Potential brute force attempts where an attacker repeatedly fails before gaining access.
+
+---
+
+### 2. Successful Logons (Baseline Activity)
+Tracks normal login activity to establish a baseline.
+
+```spl
+index=wineventlog EventCode=4624
+| stats count by Account_Name, Workstation_Name
+```
+
+**What it shows:**  
+Normal authentication patterns so anomalies can be identified.
+
+---
+
+### 3. PowerShell Execution Monitoring
+Detects PowerShell usage which may indicate malicious activity.
+
+```spl
+index=wineventlog EventCode=4688
+| search New_Process_Name="*powershell.exe"
+| table _time, Account_Name, New_Process_Name, Command_Line
+```
+
+**What it shows:**  
+Potential living-off-the-land techniques using PowerShell.
+
+---
+
+### 4. Reconnaissance Detection (Nmap Scan Behavior)
+Identifies potential network scanning activity.
+
+```spl
+index=wineventlog EventCode=5156
+| stats count by Source_Address, Destination_Port
+| where count > 50
+```
+
+**What it shows:**  
+Unusual spikes in connections that may indicate scanning activity.
+
+---
+
+## Use of AI in the Lab
+I leveraged AI tools to:
+- Generate and refine Splunk queries for threat detection  
+- Simulate attacker behaviors and detection scenarios  
+- Identify patterns in logs and highlight anomalies  
+- Assist in documenting findings and structuring threat hunting workflows  
+
+This reflects how modern security teams use AI to augment analyst capabilities rather than replace them.
+
+---
+
+## Skills Demonstrated
+- Threat hunting methodology (hypothesis-driven analysis)  
+- SIEM configuration and log ingestion (Splunk)  
+- Endpoint telemetry analysis (Windows logs)  
+- Detection engineering fundamentals  
+- Network and security monitoring  
+- Applying AI to improve detection and analysis  
+
+---
+
+## Lessons Learned
+This lab helped me understand how endpoint data is collected and analyzed in a SIEM, and how threat hunting differs from basic alert monitoring.
+
+I also learned how important it is to filter noise, build meaningful detection logic, and apply context when investigating activity. Using AI tools showed me how analysts can work more efficiently when generating queries and analyzing patterns in large datasets.
