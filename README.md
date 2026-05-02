@@ -21,6 +21,9 @@ The goal of this lab was to move beyond basic logging and practice hypothesis-dr
 - Virtualized lab network for controlled attack simulation  
 - Endpoint telemetry collected from Windows machines  
 
+## Network Architecture
+
+![Cybersecurity Home Lab Diagram](network-diagram.png)
 ---
 
 ## What I Configured
