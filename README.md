@@ -143,3 +143,38 @@ This reflects how modern security teams use AI to augment analyst capabilities r
 This lab helped me understand how endpoint data is collected and analyzed in a SIEM, and how threat hunting differs from basic alert monitoring.
 
 I also learned how important it is to filter noise, build meaningful detection logic, and apply context when investigating activity. Using AI tools showed me how analysts can work more efficiently when generating queries and analyzing patterns in large datasets.
+
+---
+
+## Threat Hunt Case Study: Suspicious Login Activity
+
+### Objective
+Investigate potential brute force behavior on a domain-joined Windows machine.
+
+### Hypothesis
+Multiple failed login attempts followed by a successful login may indicate unauthorized access.
+
+### Data Source
+- Windows Security Logs (Event ID 4625 - failed logon)
+- Windows Security Logs (Event ID 4624 - successful logon)
+
+### Method
+Used Splunk to correlate failed and successful login events by account:
+
+```spl
+index=wineventlog (EventCode=4625 OR EventCode=4624)
+| stats count by Account_Name, EventCode
+```
+
+### Findings
+- Identified multiple failed login attempts on a test account
+- Observed a successful login shortly after repeated failures
+- Activity originated from the same host
+
+### Conclusion
+This pattern is consistent with brute force behavior. In a real environment, this would trigger further investigation or account lockdown.
+
+### Next Steps
+- Add alerting for repeated failed logins
+- Monitor for lateral movement
+- Investigate source system for compromise
